@@ -1,4 +1,3 @@
-
 var snakeTable = document.querySelector(".snakeTable");
 var boxes = document.getElementsByClassName("box");
 var modul = document.querySelector(".modul");
@@ -6,21 +5,33 @@ var start = document.querySelector(".start");
 
 var table = {
   rowsCols: 21,
-  boxes: 21*21
+  boxes: 21 * 21,
 };
 
 var snake = {
   direction: "right",
-  position: [[6,10], [7,10], [8,10], [9,10], [10,10]],
+  position: [
+    [6, 10],
+    [7, 10],
+    [8, 10],
+    [9, 10],
+    [10, 10],
+  ],
   interval: 200,
   food: 0,
   score: 0,
   final: 0,
   time: 0,
   canTurn: 0,
-  init: function() {
+  init: function () {
     snake.direction = "right";
-    snake.position = [[6,10], [7,10], [8,10], [9,10], [10,10]];
+    snake.position = [
+      [6, 10],
+      [7, 10],
+      [8, 10],
+      [9, 10],
+      [10, 10],
+    ];
     snake.interval = 200;
     snake.food = 0;
     snake.score = 0;
@@ -28,7 +39,7 @@ var snake = {
     snake.canTurn = 0;
     snakeTable.innerHTML = "";
     tableCreation();
-  }
+  },
 };
 
 // init game
@@ -36,7 +47,7 @@ snake.init();
 
 start.addEventListener("click", startSnake);
 
-document.addEventListener("keydown", function(e) {
+document.addEventListener("keydown", function (e) {
   if (e.keyCode === 13 && snake.time === 0) {
     startSnake();
   }
@@ -50,7 +61,7 @@ function startSnake() {
   renderSnake();
   randomFood();
   // interval, heart of the game
-  setInt = setInterval(function() {
+  setInt = setInterval(function () {
     move();
   }, snake.interval);
 }
@@ -60,7 +71,7 @@ function stopp() {
   clearInterval(setInt);
   snake.final = snake.score;
   start.querySelector("span").innerHTML = snake.final + " Points !";
-  setTimeout(function() {
+  setTimeout(function () {
     start.querySelector("span").innerHTML = "Play Snake";
   }, 1500);
   snake.init();
@@ -82,7 +93,9 @@ function move() {
 
 function updatePositions() {
   // remove last snake part (first snake pos)
-  boxes[snake.position[0][0] + snake.position[0][1] * table.rowsCols].classList.remove("snake");
+  boxes[
+    snake.position[0][0] + snake.position[0][1] * table.rowsCols
+  ].classList.remove("snake");
   snake.position.shift();
   // add new snake part
   var head = snake.position[snake.position.length - 1];
@@ -106,9 +119,16 @@ function updatePositions() {
 
 // checks border contact
 function hitBorder() {
-  var headPos = snake.position.length-1;
+  var headPos = snake.position.length - 1;
   // goes of limits
-  if (((snake.position[headPos][0] === table.rowsCols-1) && (snake.direction === "right")) || ((snake.position[headPos][0] === 0) && (snake.direction === "left")) || ((snake.position[headPos][1] === table.rowsCols-1) && (snake.direction === "down")) ||  ((snake.position[headPos][1] === 0) && (snake.direction === "up"))) {
+  if (
+    (snake.position[headPos][0] === table.rowsCols - 1 &&
+      snake.direction === "right") ||
+    (snake.position[headPos][0] === 0 && snake.direction === "left") ||
+    (snake.position[headPos][1] === table.rowsCols - 1 &&
+      snake.direction === "down") ||
+    (snake.position[headPos][1] === 0 && snake.direction === "up")
+  ) {
     // console.log("border hit");
     stopp();
   }
@@ -116,18 +136,18 @@ function hitBorder() {
 
 // checks self contact
 function hitSnake() {
-  var headPos = snake.position.length-1;
-  for (var i=0; i<headPos; i++) {
+  var headPos = snake.position.length - 1;
+  for (var i = 0; i < headPos; i++) {
     if (snake.position[headPos].toString() === snake.position[i].toString()) {
       // console.log("snake hit");
       stopp();
     }
-  } 
+  }
 }
 
 // checks food contact
 function hitFood() {
-  var head = snake.position[snake.position.length-1];
+  var head = snake.position[snake.position.length - 1];
   var tail = snake.position[0];
   if (head.toString() === foodPos.toString()) {
     boxes[random].classList.remove("food");
@@ -138,8 +158,8 @@ function hitFood() {
     scoreElt.innerHTML = snake.score + " pts";
     // increase speed
     clearInterval(setInt);
-    snake.interval = snake.interval - snake.interval/40;
-    setInt = setInterval(function() {
+    snake.interval = snake.interval - snake.interval / 40;
+    setInt = setInterval(function () {
       move();
     }, snake.interval);
   }
@@ -155,15 +175,17 @@ function randomFood() {
     randomX = Math.floor(Math.random() * table.rowsCols);
     randomY = Math.floor(Math.random() * table.rowsCols);
     random = randomX + randomY * table.rowsCols;
-  }  
+  }
   boxes[random].classList.add("food");
   foodPos = [randomX, randomY];
 }
 
 // read positions and render the snake
 function renderSnake() {
-  for (var i=0; i<snake.position.length; i++) {
-    boxes[snake.position[i][0] + snake.position[i][1] * table.rowsCols].classList.add("snake");
+  for (var i = 0; i < snake.position.length; i++) {
+    boxes[
+      snake.position[i][0] + snake.position[i][1] * table.rowsCols
+    ].classList.add("snake");
   }
 }
 
@@ -174,19 +196,19 @@ function turn(e) {
       case 13:
         // document.removeEventListener()
         break;
-      case 37:// left
+      case 37: // left
         if (snake.direction === "right") return;
         snake.direction = "left";
         break;
-      case 38:// up
+      case 38: // up
         if (snake.direction === "down") return;
         snake.direction = "up";
         break;
-      case 39:// right
+      case 39: // right
         if (snake.direction === "left") return;
         snake.direction = "right";
         break;
-      case 40:// down
+      case 40: // down
         if (snake.direction === "up") return;
         snake.direction = "down";
         break;
@@ -201,7 +223,7 @@ function turn(e) {
 function tableCreation() {
   if (snakeTable.innerHTML === "") {
     // main table
-    for (var i = 0; i<table.boxes; i++) {
+    for (var i = 0; i < table.boxes; i++) {
       var divElt = document.createElement("div");
       divElt.classList.add("box");
       snakeTable.appendChild(divElt);
@@ -229,10 +251,10 @@ function tableCreation() {
 // var checkPageInterval = setInterval(checkPageFocus, 300);
 
 // swipe Showcase
-$("document").ready(function() {
+$("document").ready(function () {
   $("body")
     .swipeDetector()
-    .on("swipeLeft.sd swipeRight.sd swipeUp.sd swipeDown.sd", function(event) {
+    .on("swipeLeft.sd swipeRight.sd swipeUp.sd swipeDown.sd", function (event) {
       if (event.type === "swipeLeft") {
         if (snake.direction === "right") return;
         snake.direction = "left";
@@ -251,8 +273,8 @@ $("document").ready(function() {
 });
 
 // swipe function --> credit: https://codepen.io/AlexEmashev/pen/BKgQdx?editors=0100
-(function($) {
-  $.fn.swipeDetector = function(options) {
+(function ($) {
+  $.fn.swipeDetector = function (options) {
     // States: 0 - no swipe, 1 - swipe started, 2 - swipe released
     var swipeState = 0;
     // Coordinates when swipe started
@@ -268,7 +290,7 @@ $("document").ready(function() {
       swipeThreshold: 30,
       // Flag that indicates that plugin should react only on touch events.
       // Not on mouse events too.
-      useOnlyTouch: true
+      useOnlyTouch: true,
     };
 
     // Initializer
@@ -343,28 +365,20 @@ $("document").ready(function() {
 })(jQuery);
 
 // remove scroll for mobile IOS issue
-function preventDefault(e){e.preventDefault();}
-function disableScroll(){
-    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+function preventDefault(e) {
+  e.preventDefault();
 }
-function enableScroll(){
-    document.body.removeEventListener('touchmove', preventDefault, { passive: false });
+function disableScroll() {
+  document.body.addEventListener("touchmove", preventDefault, {
+    passive: false,
+  });
+}
+function enableScroll() {
+  document.body.removeEventListener("touchmove", preventDefault, {
+    passive: false,
+  });
 }
 disableScroll();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Variables
 
@@ -407,18 +421,45 @@ console.log(pi);
 // 3) key word : "var"
 
 var name = "jorge";
-console.log(name)
+console.log(name);
 
+// Data Types
+// 1) Number
 
+const number = 10;
+const number2 = 1000;
+const floatNumber = 10.5;
+const negativeNumber = -10;
+const zero = 0;
 
+// 2) String
+const fullName = "Elon Musk";
+const letter = "x";
+const emptyString = "";
 
+// 3) Boolean
+const me = true;
+const you = false;
 
+// 4) Null
+const nothingness = null;
 
+// 5) Undefined
+const neopredelen = undefined;
 
+// 6) Object
 
+const person = {
+  name: "John",
+  surname: "Wick",
+};
 
+// 7) bigInt
 
+const huge = BigInt(19999999999999999999999999)
 
+// 8) Symbol
 
+const symb = Symbol('foo')
 
 
